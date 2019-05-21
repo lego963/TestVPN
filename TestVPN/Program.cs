@@ -1,5 +1,8 @@
 ﻿using System;
 using System.Diagnostics;
+using System.Diagnostics.Eventing.Reader;
+using System.Drawing;
+using System.Drawing.Imaging;
 using System.IO;
 using System.Net;
 using System.Net.Sockets;
@@ -17,6 +20,7 @@ namespace TestVPN
         private static Commands Command { get; set; } = Commands.About;
         private static void Main()
         {
+            Console.SetWindowSize(125, 45);
             Console.WriteLine("VPN service for demonstration");
             Console.WriteLine(new string('-', 30));
             Console.WriteLine("Info:\r\n1. connect\r\n2. disconnect\r\n3. about\r\n4. show\r\n5. exit");
@@ -55,6 +59,7 @@ namespace TestVPN
                         break;
                     case Commands.About:
                         //HERE WILL BE KURSOVAYA RABOTA LOGO SPLASH XPDDLSADASFWEG :)
+                        DrawSplash();
                         break;
                     case Commands.ShowIp:
                         Console.WriteLine($"Your current ip address is: {GetLocalIpAddress()}\r\n");
@@ -132,5 +137,48 @@ namespace TestVPN
             }
             throw new Exception("No network adapters with an IPv4 address in the system!");
         }
+
+        private static void DrawSplash()
+        {
+            var splash = new[]
+            {
+                @"                                                                           ",
+                @"                         `..--:::::::::::----..``                          ",
+                @"                     .-////:::::::::::::::::::::::-.`                      ",
+                @"                  .:+/:::::::::::::::::::::::::::::::--`                   ",
+                @"                ./+/::::::::::::::::::::::::::::::::::::-.                 ",
+                @"             `.-++::::::::::::::::::::::::::::::::::::::::-``              ",
+                @"            :hh++::/h:::::::::ss:hsooooso:::oh+:::::::/h::::yy/            ",
+                @"            /dy+/:::ss:::::::+h::d/:::::oy::ssyo::::::/h::::+ds            ",
+                @"            /dy+/::::h+:::::/h/::d/:::::/d::ss:sy:::::/h::::+ds            ",
+                @"            :dy+/::::+h:::::yo:::d/::::/ss::ss::oy/:::/h::::+do            ",
+                @"            -dh+/:::::ss:::oy::::dsooooo/:::ss:::/yo::/h::::od/            ",
+                @"            `hd++:::::/h/:/h/::::d/:::::::::ss:::::ys:/h::::yd.                               KURSOVOY PROECT",
+                @"             sdo+::::::+y:y+:::::d/:::::::::ss::::::oy/h::::dy                                PERFILYEVA OLGA",
+                @"             -dy+/::::::yys::::::d/:::::::::ss:::::::+yh:::od/                                TEST VPN",
+                @"              ydo+:::::::+:::::::+:::::::::://::::::::/+:::hh`                                BIYU EBALA NAHYU",
+                @"              -dy+/:::::::::::::::::::::::::::::::::::::::od/              ",
+                @"               +ds+::::::::::::::::////::::::::::::::::::/ds               ",
+                @"               `sdo+:::::::::::::/yhyyhhs:::::::::::::::/hy`               ",
+                @"                `ydo+:::::::::::+dy+::/odh:::::::::::::/hy.                ",
+                @"                 `sds+::::::::::sds+++++yd+:::::::::::+hy.                 ",
+                @"                  `+hy+/::::::::sdddhyhddd+::::::::::oh+`                  ",
+                @"                    -yhs/:::::::sddd:-oddd+::::::::+yy-                    ",
+                @"                     `/hho/:::::sdddy/hddd+::::::+yh/`                     ",
+                @"                       `+hho/:::sddddhdddd+::::+yh+`                       ",
+                @"                         .+hhs/:+sssssssss/::+yy/.                         ",
+                @"                           `/yhy+:::::::::/shy:`                           ",
+                @"                              -ohhs/:::/oyy+-                              ",
+                @"                                `:ohyyyyo-`                                ",
+                @"                                    .-.                                    ",
+                @"                                                                           "
+            };
+
+            foreach (var item in splash)
+            {
+                Console.WriteLine(item);
+            }
+        }
+
     }
 }

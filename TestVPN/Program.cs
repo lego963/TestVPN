@@ -1,8 +1,5 @@
 ﻿using System;
 using System.Diagnostics;
-using System.Diagnostics.Eventing.Reader;
-using System.Drawing;
-using System.Drawing.Imaging;
 using System.IO;
 using System.Net;
 using System.Net.Sockets;
@@ -12,12 +9,14 @@ namespace TestVPN
 {
     internal static class Program
     {
+        private static string Ip { get; } = GetLocalIpAddress();
         private static string Host { get; set; }
         private static string Login { get; set; }
         private static string Password { get; set; }
         private static string Path { get; set; }
         private static Status CurrentStatus { get; set; } = Status.Disconnected;
         private static Commands Command { get; set; } = Commands.About;
+
         private static void Main()
         {
             Console.SetWindowSize(125, 45);
@@ -29,15 +28,39 @@ namespace TestVPN
             while (Command != Commands.Exit)
             {
                 Console.Write("Enter the command number: ");
-                Command = (Commands)(Convert.ToInt32(Console.ReadLine()) - 1);
+                if (int.TryParse(Console.ReadLine(), out var cmd))
+                {
+                    cmd--;
+                    if (cmd > 0 && cmd < 6)
+                    {
+                        Command = (Commands)cmd;
+                    }
+                    else
+                    {
+                        Command = (Commands)10;
+                    }
+                }
+                else
+                {
+                    Command = (Commands)10;
+                }
+
                 switch (Command)
                 {
                     case Commands.Connect:
                         if (CurrentStatus != Status.Connected)
                         {
                             Connect();
-                            Console.WriteLine("Connection has been established\r\n");
-                            CurrentStatus = Status.Connected;
+                            if (Ip != GetLocalIpAddress())
+                            {
+                                Console.WriteLine("Connection has been established\r\n");
+                                CurrentStatus = Status.Connected;
+                            }
+                            else
+                            {
+                                Console.WriteLine("Connection hasn't been established!");
+                            }
+
                         }
                         else
                         {
@@ -58,7 +81,6 @@ namespace TestVPN
 
                         break;
                     case Commands.About:
-                        //HERE WILL BE KURSOVAYA RABOTA LOGO SPLASH XPDDLSADASFWEG :)
                         DrawSplash();
                         break;
                     case Commands.ShowIp:

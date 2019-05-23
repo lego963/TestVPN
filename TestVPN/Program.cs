@@ -31,7 +31,7 @@ namespace TestVPN
                 if (int.TryParse(Console.ReadLine(), out var cmd))
                 {
                     cmd--;
-                    if (cmd > 0 && cmd < 6)
+                    if (cmd >= 0 && cmd <= 4)
                     {
                         Command = (Commands)cmd;
                     }
